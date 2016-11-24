@@ -215,16 +215,18 @@ select job_id,
   precisa trabalhar com estimativas ao invés dos valores reais
  */
 
--- A seletividade estimada é obtida pelo número de valores distintos dividido
--- pelo número de linhas da tabela
+-- A seletividade estimada é obtida pelo número de valores da tabela dividido
+-- pelo número de valores distintos
 select round(1 / count(distinct job_id), 4) as seletividade_estimada
   from hr.employees;
-  
+
 -- Esta seletividade é válida para QUALQUER job_id, contando que não hajam
 -- estimativas melhores (já veremos isso)
  
 -- A cardinalidade estimada é calculada multiplicando a seletividade estimada
 -- pelo total de linhas
+
+select count(distinct job_id) from hr.employees;
 select round(
          (1 / count(distinct job_id)) * count(*), 
        4)                                           as cardinalidade_estimada
@@ -368,7 +370,7 @@ select column_name, num_distinct, sample_size, num_buckets, histogram
 -- verifica se o plano está na shared pool
 select sql_id, vs.address || ',' || vs.hash_value as name
   from v$sql     vs
- where vs.sql_text like 'select /*+ hardparse */%';
+ where vs.sql_text like 'select /* hardparse */%';
 
 -- Ativa o TRACE
 alter session set events '10053 trace name context forever, level 1';
@@ -389,7 +391,7 @@ select value
 -- METODO 2: trace por SQL_ID
 select sql_id, vs.address || ',' || vs.hash_value as name
   from v$sql     vs
- where vs.sql_text like 'select /*+ hardparse */%';
+ where vs.sql_text like 'select /* hardparse */%';
   
 -- substituir o name pelo resultado acima [elimina o cursor da shared pool]
 execute sys.dbms_shared_pool.purge('000000007279E130,1242646934','C',1);

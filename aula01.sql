@@ -117,7 +117,7 @@ ping curso12c
   password: oracle
   role    : default
   hostname: ip-da-vm ou alias
-  sid     : orcl  
+  service : orcl  
 */
 
 ------------------------------

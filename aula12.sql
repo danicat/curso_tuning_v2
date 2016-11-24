@@ -24,7 +24,7 @@
 DROP TABLE employees;
 CREATE TABLE employees AS
 SELECT e.* 
-  FROM hr.employees e, (SELECT ROWNUM FROM dual CONNECT BY LEVEL <= 10000);
+ FROM hr.employees e, (SELECT ROWNUM FROM dual CONNECT BY LEVEL <= 10000);
 
 -- 1 milhão de linhas
 SELECT count(*) FROM employees;
@@ -95,7 +95,7 @@ SELECT sql_id,
        loads, 
        loaded_versions
   FROM v$sql
- WHERE sql_text LIKE 'select /*bloco1*/%';
+ WHERE sql_text LIKE 'SELECT /*bloco1*/%';
 
 -- No entanto, observe atentamente ao PLAN_HASH_VALUE. Duas querys, mesmo sendo
 -- diferentes, utilizaram o mesmo plano. Duvida? :) Confira os planos:
@@ -117,7 +117,7 @@ SELECT sql_id,
        is_bind_aware, 
        buffer_gets 
   FROM v$sql
- WHERE sql_text LIKE 'select /*bloco1*/%';
+ WHERE sql_text LIKE 'SELECT /*bloco1*/%';
 
 
 -------------------------------------
@@ -149,7 +149,7 @@ SELECT sql_id,
        is_bind_aware, 
        buffer_gets 
   FROM v$sql
- WHERE sql_text LIKE 'select /*bloco1*/%';
+ WHERE sql_text LIKE 'SELECT /*bloco1*/%';
 
 -- Observe que para a mesma query cada child_number tem um plano diferente
 SELECT *
@@ -161,6 +161,6 @@ SELECT * FROM TABLE(dbms_xplan.display_cursor('fkaycpxt6xqfx', 1));
 
 SELECT *
   FROM v$sql_shared_cursor
- WHERE sql_id = 'fkaycpxt6xqfx';
+ WHERE sql_id = '9ncr3jkmxhfgm';
  
  

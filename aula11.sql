@@ -283,6 +283,7 @@ SELECT * FROM TABLE(dbms_xplan.display);
 -- Deu certo! Vamos publicar...
 exec dbms_stats.publish_pending_stats ('SH','SALES');
 
+-- exec dbms_stats.DELETE_pending_stats ('SH','SALES');
 SELECT count(*) FROM dba_tab_pending_stats;
 
 ALTER SESSION SET optimizer_use_pending_statistics=FALSE;

@@ -35,6 +35,12 @@ select *
 select *
   from v$sesstat;
 
+select count(distinct sid)
+  from v$mystat;
+
+select count(distinct sid)
+  from v$sesstat;
+
 /*
   Para entender melhor o que cada estatística representa, precisamos ligar
   qualquer uma destas views à view v$statname:
@@ -192,7 +198,7 @@ select round(1 - (physical_reads /
 declare
  a number := 0;
 begin
-  for r0 in (select dbms_random.value * 30000 + 1 id 
+  for r0 in (select trunc(dbms_random.value * 30000 + 1) id 
                from dual connect by level <= 100000)
   loop
     for r1 in (select id, data, data2 from curso.t4 where id = r0.id)
@@ -285,6 +291,7 @@ select do.object_name, bh.status, count(*)
  
 select * from curso.t4 for update;
 
+
 update curso.t4
    set data = NULL
  where mod(id, 100) = 1;
@@ -307,7 +314,7 @@ select do.object_name, bh.tch, bh.*
 -- o código abaixo vai acessar 1000 vezes os mesmos 10 blocos
 declare
  a number := 0;
-begin
+begin/
   for r0 in (select mod(rownum,10) id from dual connect by level <= 1000)
   loop
     for r1 in (select id, data, data2 from curso.t4 where id = r0.id)
